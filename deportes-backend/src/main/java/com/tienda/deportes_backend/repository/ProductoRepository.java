@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository // <-- Importante: le indica a Spring que cree el Bean de datos
+@Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    List<Producto> findAllByOrderByIdDesc();
+    List<Producto> findByCategoriaNombre(String nombreCategoria);
+    List<Producto> findByOferta(Integer oferta);
 }
