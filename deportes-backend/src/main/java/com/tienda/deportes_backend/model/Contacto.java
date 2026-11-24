@@ -5,8 +5,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "CONTACTO")
-@Data 
+@Table(name = "contacto")
+@Data
 public class Contacto {
 
     @Id
@@ -26,6 +26,8 @@ public class Contacto {
 
     @PrePersist
     public void asignarFecha() {
-        this.fecha = LocalDateTime.now();
+        if (this.fecha == null) {
+            this.fecha = LocalDateTime.now();
+        }
     }
 }

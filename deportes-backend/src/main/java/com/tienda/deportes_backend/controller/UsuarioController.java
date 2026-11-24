@@ -9,13 +9,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
-    public List<Usuario> listar() {
+    public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
 }

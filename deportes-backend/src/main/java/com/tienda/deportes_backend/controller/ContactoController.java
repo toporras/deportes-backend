@@ -24,14 +24,30 @@ public class ContactoController {
 
     @PostMapping
     public ResponseEntity<?> guardarMensaje(@RequestBody Contacto contacto) {
-        if (contacto.getNombre() == null || contacto.getNombre().isBlank() ||
-            contacto.getEmail() == null || contacto.getEmail().isBlank() ||
-            contacto.getMensaje() == null || contacto.getMensaje().isBlank()) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Todos los campos (nombre, correo y mensaje) son obligatorios."));
-        }
+        try {
+            if (contacto.getNombre() == null || contacto.getNombre().isBlank() ||
+                contacto.getEmail() == null || contacto.getEmail().isBlank() ||
+                contacto.getMensaje() == null || contacto.getMensaje().isBlank()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Todos los campos son obligatorios."));
+            }
 
-        Contacto guardado = contactoRepository.save(contacto);
-        return ResponseEntity.ok(guardado);
+            Contacto guardado = contactoRepository.save(contacto);
+            System.out.println("Contacto guardado en MySQL con ID: " + guardado.getId());
+            return ResponseEntity.ok(guardado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Error al guardar contacto: " + e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarMensaje(@PathVariable Long id) {
+        if (!contactoRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        contactoRepository.deleteById(id);
+        return ResponseEntity.ok(Map.of("mensaje", "Consulta eliminada"));
     }
 }
