@@ -1,5 +1,6 @@
 package com.tienda.deportes_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -20,8 +21,10 @@ public class Boleta {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnoreProperties({"password", "boletas"})
     private Usuario usuario;
 
     @OneToMany(mappedBy = "boleta", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("boleta")
     private List<DetalleBoleta> detalles;
-}
+}   
